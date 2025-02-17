@@ -1,2 +1,5 @@
 /myenv
 hamlet.txt
+*.keras
+*.h5
+*.pickle
