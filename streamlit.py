@@ -1,17 +1,20 @@
-import streamlit                                as st
-import numpy                                    as np
-from tensorflow.keras.models                    import load_model
-from tensorflow.keras.preprocessing.sequence    import pad_sequences
+import streamlit as st
+import numpy as np
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 import pickle
 
-
 # Load the model and the tokenizer
-model = load_model('prediction_lstm.h5')
+try:
+    lstmModel = load_model('prediction_lstm.h5')
+    gruModel = load_model('prediction_lstm_gru.h5')
 
-with open('tokenizer.pickle', 'rb') as handle:
-    tokenizer = pickle.load(handle)
-    
-# Predict the next word
+    with open('tokenizer.pickle', 'rb') as handle:
+        tokenizer = pickle.load(handle)
+except Exception as e:
+    st.error(f"Error loading models or tokenizer: {e}")
+    st.stop()  # Stop execution if models fail to load
+
 def predictNextWord(model, tokenizer, text, sequence_length):
     tokenList = tokenizer.texts_to_sequences([text])[0]
     
@@ -27,10 +30,28 @@ def predictNextWord(model, tokenizer, text, sequence_length):
             return word
     return None
 
-# Streamlit Applicaiton
-st.title('Next Word Prediction with LSTM')
-inputText = st.text_input("Enter The Sequence of Words", "To Be Or Not To")
+# Streamlit App
+st.title('Next Word Prediction')
+
+lstmInputText = st.text_area("Enter Input Sequence for LSTM", "To be or not to be, that is the")
+gruInputText = st.text_area("Enter Input Sequence for GRU", "What a piece of work is man")
+
+# Check for empty input
+if not lstmInputText.strip() or not gruInputText.strip():
+    st.warning("Please enter text for both models.")
+    st.stop()
+
 if st.button("Predict Next Word"):
-    sequenceLength = model.input_shape[1] + 1
-    nextWord = predictNextWord(model, tokenizer, inputText, sequenceLength)
-    st.write(f'Next Word: {nextWord}')
+    lstmSequenceLength = lstmModel.input_shape[1] + 1
+    try:
+        lstmNextWord = predictNextWord(lstmModel, tokenizer, lstmInputText, lstmSequenceLength)
+        st.write(f'**LSTM Next Word:** {lstmNextWord}')
+    except Exception as e:
+        st.error(f"Error during LSTM prediction: {e}")
+
+    gruSequenceLength = gruModel.input_shape[1] + 1
+    try:
+        gruNextWord = predictNextWord(gruModel, tokenizer, gruInputText, gruSequenceLength)
+        st.write(f'**GRU Next Word:** {gruNextWord}')
+    except Exception as e:
+        st.error(f"Error during GRU prediction: {e}")
