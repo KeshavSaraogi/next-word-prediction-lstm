@@ -1,9 +1,5 @@
 /__pycache__
 /myenv
-gru_app.py
-gruRNN.ipynb
-prediction_gru.keras
-tokenizerGRU.pickle
 hamlet.txt
 *.pyc
 *.ipynb_checkpoints/
