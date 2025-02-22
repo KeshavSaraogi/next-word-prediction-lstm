@@ -1,8 +1,6 @@
-tensorflow==2.14.0
-pandas 
-numpy 
-scikit-learn
-tensorboard
 matplotlib
+numpy
+pandas
+scikit-learn
 streamlit
-scikeras
+tensorflow==2.14.0
