@@ -1,1 +1,1 @@
-streamlit run streamlit.py
+streamlit run lstm_app.py
