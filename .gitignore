@@ -3,3 +3,4 @@ hamlet.txt
 *.keras
 *.h5
 *.pickle
+/__pycache__
