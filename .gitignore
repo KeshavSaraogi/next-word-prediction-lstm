@@ -1,6 +1,10 @@
-/myenv
-hamlet.txt
-*.keras
-*.h5
-*.pickle
 /__pycache__
+/myenv
+gru_app.py
+gruRNN.ipynb
+prediction_gru.keras
+tokenizerGRU.pickle
+hamlet.txt
+*.pyc
+*.ipynb_checkpoints/
+.DS_Store
